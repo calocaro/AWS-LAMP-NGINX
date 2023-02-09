@@ -24,10 +24,36 @@ Ahora bien, para poder lanzar una instancia, lo que es la creación de ella, ser
 3. Una vez que entramos en "Lanzar una instancia" , le pondremos nombre a la instancia. En nuestro caso le pondremos "nginx".
 4. Lo siguiente será en el apartado de "Imágenes de aplicaciones y sistemas operativos (Amazon Machine Image), donde escogeremos la imagen de "Amazon Linux" que nos ofrece AWS.
 5. El tipo de instancia será "t2.micro" , que es el apto para la capa gratuita.
-6. En el apartado de "Par de claves (inicio de sesión)" , para conectarse a una máquina que crea en AWS, necesitamos un par de claves, con la clave privada en tu máquina y la clave pública en AWS
+6. En el apartado de "Par de claves (inicio de sesión)" , para conectarse a una máquina que crea en AWS, necesitamos un par de claves, con la clave privada en tu máquina y la clave pública en AWS.
+7. Luego, en el apartado de "Configuraciones de red, creamos un grupo de seguridad de forma que, permitimos el tráfico de SSH desde (donde elijas) puede ser desde cualquier lugar, como desde un lugar en concreto; premitimos el tráfico de HTTPS desde Internet; y permitimos también el tráfico de HTTP desde Internet.
+8. El apartado de la configuración de almacenamiento lo dejamos tal cual se nos presenta.
+9. Por último escogemos el número de instancias que queremos hacer y  finalizamos lanzando la instancia.
+
+Luego solo tendríamos que volver a "Instancias" y escoger la nueva que hemos lanzado y conectarla. En cuanto se conecte nos saldrá una ventana donde tendremos el apartado de "Cliente SSH".
 
 ### Comprobación del resultado
 
 En el [ panel de EC2 ] (https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2), ahora debería ver una instancia en ejecución y 2 grupos de seguridad.
 Al hacer click en "Instancias en ejecución" , aparecerá una lista de todas las instancias de EC2.
 Copie la IP pública de la columna de la derecha en una nueva pestaña del navegador y mire su nuevo sitio web.
+
+### Cliente SSH
+
+1. Abrimos el terminal y  creamos un nuevo directorio *mkdir ProyAWS* 
+2. Nos metemos en dicho directorio *cd ProyAWS*
+3. Localizamos el archivo de clave privada. La clave utilizada para lanzar esta instancia es, en nuestro caso, llave.pem
+4. Dentro de */ProyAWS* hacemos un *ls*
+5. Y dentro, ejecutamos *chmod 400 llave.pem* para garantizar que la clave se pueda ver públicamente
+6. Luego tendremos que instalar nginx mediante los siguientes comandos:
+    - *sudo amazon-linux-extras list | grep nginx*
+    - *sudo amazon-linux-extras enable nginx1*
+    ...Ahora puedes instalar...
+    - *sudo yum clean metadata*
+    - *sudo yum -y install nginx*
+    - *nginx -v*
+    - *sudo amazon-linux-extras install -y nginx1*
+    - *sudo systemctl start nginx*
+    - *sudo systemctl enable nginx*
+### Conexión a través de Visual Studio Code
+
+Si queremos conectarnos por ssh con VSC tenemos que editar el documento situado en "authorized_keys" en la carpeta "/root/.ssh/authorized_keys" una vez dentro tenemos que borrar todo lo escrito antes de ssh.rsa 
