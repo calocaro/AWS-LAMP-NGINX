@@ -56,4 +56,5 @@ Copie la IP pública de la columna de la derecha en una nueva pestaña del naveg
     - *sudo systemctl enable nginx*
 ### Conexión a través de Visual Studio Code
 
-Si queremos conectarnos por ssh con VSC tenemos que editar el documento situado en "authorized_keys" en la carpeta "/root/.ssh/authorized_keys" una vez dentro tenemos que borrar todo lo escrito antes de ssh.rsa 
+Si queremos conectarnos por ssh con VSC tenemos que editar el documento situado en "authorized_keys" en la carpeta "/root/.ssh/authorized_keys" una vez dentro tenemos que borrar todo lo escrito antes de ssh.rsa.
+Y luego entraríamos en VSC y procedemos a instalar la extensión de Remote-ssh para poder hacer la conexión. Cuando ésta se instale, lo que haremos será pulsar la tecla F1 para que salga el buscador y así nosotros poder buscar *"Agregar un nuevo host"* 
