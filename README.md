@@ -58,3 +58,42 @@ Copie la IP pública de la columna de la derecha en una nueva pestaña del naveg
 
 Si queremos conectarnos por ssh con VSC tenemos que editar el documento situado en "authorized_keys" en la carpeta "/root/.ssh/authorized_keys" una vez dentro tenemos que borrar todo lo escrito antes de ssh.rsa.
 Y luego entraríamos en VSC y procedemos a instalar la extensión de Remote-ssh para poder hacer la conexión. Cuando ésta se instale, lo que haremos será pulsar la tecla F1 para que salga el buscador y así nosotros poder buscar *"Agregar un nuevo host"* 
+
+## Bloqueo de acceso de IP concretas
+
+Para ello debemos crear un fichero llamado [```blacklist.conf```]() donde añadimos las políticas restrictivas sobre las IPS que querramos indicar.
+
+```yml
+
+deny 192.168.1.0/24;
+allow all;
+
+```
+Para ello debemos ir al fichero de configuración [```nginx.conf```] y en el apartado server añadir un include del fichero de de la blacklist creada previamente.
+
+```yml
+
+    server {
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
+        #root         /usr/share/nginx/html;
+        root /home/ec2-user/html;
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/blacklist.conf
+
+        error_page 404 /404.html;
+        location = /404.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+        }
+    }
+```
+
+Posteriormente debemos dar permisos al usuario de poder leer ficho fichero para ello podemos cambiarle la propiedad del mismo con el comando:
+
+`$ chown ec2-user /etc/nginx/blacklist.conf`
+
+Seguidamente de ejecutar el comando reiniciamos el servicio de nginx y ya estaría activo el bloqueo de las IPS indicadas, cada vez que modifiquemos el archivo debemos reiniciar el servicio.
